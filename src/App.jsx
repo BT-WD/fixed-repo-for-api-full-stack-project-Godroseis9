@@ -127,28 +127,37 @@ export default function App() {
       <div className="top-section">
         {/* DISPLAY BOX */}
         <div className="display-box large">
-          {pokemon ? (
-            <>
-              <h2 className="poke-name">{pokemon.name}</h2>
+  {pokemon ? (
+    <div className="pokemon-card">
+      <h2 className="poke-name">{pokemon.name}</h2>
 
-              <img
-                src={
-                  isFront
-                    ? pokemon.sprites.other["official-artwork"].front_default
-                    : pokemon.sprites.other["official-artwork"].front_shiny
-                }
-                alt={pokemon.name}
-              />
-              <button onClick={() => toggleFavorite(pokemon.name)}>
-              {favorites.includes(pokemon.name)
-                ? "💔 Remove Favorite"
-                : "❤️ Save Favorite"}
-              </button>
-            </>
-          ) : (
-            <p>Search a Pokémon</p>
-          )}
-        </div>
+      <img
+        className="pokemon-img"
+        src={
+          isFront
+            ? pokemon.sprites.other["official-artwork"].front_default
+            : pokemon.sprites.other["official-artwork"].front_shiny
+        }
+        alt={pokemon.name}
+      />
+
+      <div className="pokemon-actions">
+        <button
+          className={`fav-btn ${
+            favorites.includes(pokemon.name) ? "active" : ""
+          }`}
+          onClick={() => toggleFavorite(pokemon.name)}
+        >
+          {favorites.includes(pokemon.name)
+            ? "💔 Remove Favorite"
+            : "❤️ Save Favorite"}
+        </button>
+      </div>
+    </div>
+  ) : (
+    <p className="empty-state">Search a Pokémon</p>
+  )}
+</div>
 
         {/* SIDE PANEL */}
         <div className="side-panel">
