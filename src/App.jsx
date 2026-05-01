@@ -7,6 +7,24 @@ export default function App() {
   const [location, setLocation] = useState(null);
   const [isFront, setIsFront] = useState(true);
   const [evolution, setEvolution] = useState([]);
+  const [favorites, setFavorites] = useState([]);
+
+  useEffect(() => {
+  const saved = localStorage.getItem("favorites");
+  if (saved) setFavorites(JSON.parse(saved));
+  }, []);
+
+  useEffect(() => {
+  localStorage.setItem("favorites", JSON.stringify(favorites));
+  }, [favorites]);
+
+  const toggleFavorite = (name) => {
+  if (favorites.includes(name)) {
+    setFavorites(favorites.filter(p => p !== name));
+  } else {
+    setFavorites([...favorites, name]);
+  }
+  };
 
   // 🧠 Fetch Pokémon data
   const fetchPokemon = async (nameOrId) => {
@@ -22,8 +40,6 @@ export default function App() {
 
       fetchLocation(data.name);
       fetchEvolution(data.name);
-
-      fetchLocation(data.name);
     } catch (err) {
       console.log(err);
       setPokemon(null);
@@ -123,6 +139,11 @@ export default function App() {
                 }
                 alt={pokemon.name}
               />
+              <button onClick={() => toggleFavorite(pokemon.name)}>
+              {favorites.includes(pokemon.name)
+                ? "💔 Remove Favorite"
+                : "❤️ Save Favorite"}
+              </button>
             </>
           ) : (
             <p>Search a Pokémon</p>
